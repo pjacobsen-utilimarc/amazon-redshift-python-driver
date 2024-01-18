@@ -128,7 +128,7 @@ def connect(
     credentials_provider: typing.Optional[str] = None,
     region: typing.Optional[str] = None,
     cluster_identifier: typing.Optional[str] = None,
-    iam: typing.Optional[bool] = None,
+    iam: typing.Optional[bool, str] = None,
     client_id: typing.Optional[str] = None,
     idp_tenant: typing.Optional[str] = None,
     client_secret: typing.Optional[str] = None,
@@ -272,6 +272,10 @@ def connect(
     -------
     A Connection object associated with the specified Amazon Redshift cluster: :class:`Connection`
     """
+
+    # cast string iam "true" to boolean
+    iam = (iam.lower() == "true") if isinstance(iam, str) else iam
+
     info: RedshiftProperty = RedshiftProperty()
     info.put("access_key_id", access_key_id)
     info.put("allow_db_user_override", allow_db_user_override)
